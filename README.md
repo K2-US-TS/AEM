@@ -3,7 +3,7 @@
 The Swagger can be used with the K2 REST broker, enabling AEM integration for K2 Classic and K2 Cloud. The following actions have been exposed:
 ## Assets
 - Create an Asset 
-- Add comment to an asset
+- Add Comment to an Asset
 - Create an Asset Rendition
 - Update an Asset's Metadata
 
