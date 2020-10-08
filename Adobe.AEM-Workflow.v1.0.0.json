@@ -1,0 +1,253 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API for integrating with AEM Workflow",
+    "version": "1.0.0",
+    "title": "AEM Workflow"
+  },
+  "host": "localhost:4502",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/etc/workflow/instances.RUNNING.json": {
+      "get": {
+        "tags": [
+          "Workflow"
+        ],
+        "description": "Lists the available workflow instances",
+        "operationId": "ListWorkflows",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A list of available workflow instances.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/workflowinstance"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/etc/workflow/instances": {
+      "post": {
+        "tags": [
+          "Workflow"
+        ],
+        "description": "Create a new workflow instance",
+        "operationId": "CreateWorkflowInstance",
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "query",
+            "description": "ID (URI) of the workflow model",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "payloadType",
+            "in": "query",
+            "description": "type of the payload",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "payload",
+            "in": "query",
+            "description": "Content to associate",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/etc/workflow/instances/{id}": {
+      "get": {
+        "tags": [
+          "Worklow Instance"
+        ],
+        "description": "Get a workflow instance by ID",
+        "operationId": "GetWorkflowInstanceById",
+		"consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Instance Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/bin/workflow/inbox/": {
+      "get": {
+        "tags": [
+          "Workflow",
+          "Tasks"
+        ],
+        "description": "List Work Items from the Inbox",
+        "operationId": "ListWorkItems",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "A list of available workflow instances.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/task"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/var/workflow/instances/{id}.routes.json": {
+      "get": {
+        "tags": [
+          "Worklow Instance"
+        ],
+        "description": "Get a workflow instance route by ID",
+        "operationId": "GetTaskRoutes",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Instance Id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/routes"
+            }
+          }
+        }
+      }
+    },
+    "/bin/workflow/inbox": {
+      "get": {
+        "tags": [
+          "Workflow Task Action"
+        ],
+        "description": "Complete or advance work items to the next step",
+        "operationId": "ActionWorkItem",
+        "parameters": [
+          {
+            "name": "item",
+            "in": "query",
+            "description": "Item path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "route",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "workflowinstance": {
+      "properties": {
+        "uri": {
+          "type": "string"
+        }
+      }
+    },
+    "task": {
+      "properties": {
+        "uri_xss": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "currentAssignee_xss": {
+          "type": "string"
+        },
+        "currentAssignee": {
+          "type": "string"
+        },
+        "startTime": {
+          "type": "integer"
+        },
+        "payloadType_xss": {
+          "type": "string"
+        },
+        "payloadType": {
+          "type": "string"
+        },
+        "payload_xss": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "string"
+        },
+        "type_xss": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "routes": {
+      "properties": {
+        "results": {
+          "type": "integer"
+        },
+        "routes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/route"
+          }
+        }
+      }
+    },
+    "route": {
+      "properties": {
+        "rid": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "label_xss": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
